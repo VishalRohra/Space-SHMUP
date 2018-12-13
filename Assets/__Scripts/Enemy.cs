@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
     [Header("Set in Inspector: Enemy")]
     public float speed = 10f; // The speed in m/s
@@ -45,5 +46,18 @@ public class Enemy : MonoBehaviour {
         Vector3 tempPos = pos;
         tempPos.y -= speed * Time.deltaTime;
         pos = tempPos;
+    }
+
+    void OnCollisionEnter(Collision coll)
+    {
+        GameObject otherGO = coll.gameObject;
+
+        if (otherGO.tag == "ProjectileHero")
+        {
+            Destroy(otherGO); // Destroy the Projectile
+            Destroy(gameObject); // Destroy this Enemy GameObject
+        } else {
+            print("Enemy hit by non-ProjectileHero: " + otherGO.name);
+        }
     }
 }
